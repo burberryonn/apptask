@@ -29,7 +29,7 @@ const now = new Date();
 const demoTasks: AppTask[] = [
   {
     id: 't1',
-    title: 'Plan release notes',
+    title: 'Подготовить заметки к релизу',
     priority: 'HIGH',
     list: 'Work',
     color: '#6366f1',
@@ -37,13 +37,13 @@ const demoTasks: AppTask[] = [
     completed: false,
     hidden: false,
     recurrence: 'NONE',
-    subtasks: [{ id: 's1', title: 'Capture key shipped features', done: true }],
+    subtasks: [{ id: 's1', title: 'Собрать ключевые изменения', done: true }],
     createdAt: now.toISOString(),
     updatedAt: now.toISOString()
   },
   {
     id: 't2',
-    title: 'Morning walk',
+    title: 'Утренняя прогулка',
     priority: 'MEDIUM',
     list: 'Personal',
     color: '#14b8a6',
@@ -57,7 +57,7 @@ const demoTasks: AppTask[] = [
   },
   {
     id: 't3',
-    title: 'Archive deep-research links',
+    title: 'Разобрать ссылки по исследованию',
     priority: 'LOW',
     list: 'Deep Projects',
     color: '#64748b',
@@ -74,7 +74,7 @@ const demoTasks: AppTask[] = [
 const demoHabits: AppHabit[] = [
   {
     id: 'h1',
-    title: 'Hydration',
+    title: 'Вода',
     type: 'COUNT',
     period: 'DAILY',
     target: 8,
@@ -84,7 +84,7 @@ const demoHabits: AppHabit[] = [
     bestStreak: 11,
     successRate: 82,
     totalCompletions: 49,
-    note: 'Drink water before coffee.',
+    note: 'Стакан воды перед кофе.',
     entries: Array.from({ length: 7 }).map((_, idx) => ({
       date: addDays(now, -idx).toISOString(),
       value: Math.max(2, 8 - idx)
@@ -128,7 +128,7 @@ export const useAppStore = create<AppState>()(
           };
           return {
             tasks: [task, ...state.tasks],
-            log: [makeEvent({ entity: 'TASK', entityId: task.id, action: 'TASK_CREATED', note: task.title }), ...state.log]
+            log: [makeEvent({ entity: 'TASK', entityId: task.id, action: 'СОЗДАНА_ЗАДАЧА', note: task.title }), ...state.log]
           };
         }),
       toggleTask: (id) =>
@@ -148,7 +148,7 @@ export const useAppStore = create<AppState>()(
                 : item
             ),
             log: [
-              makeEvent({ entity: 'TASK', entityId: id, action: completed ? 'TASK_COMPLETED' : 'TASK_REOPENED', note: task.title }),
+              makeEvent({ entity: 'TASK', entityId: id, action: completed ? 'ЗАДАЧА_ЗАВЕРШЕНА' : 'ЗАДАЧА_ВОЗОБНОВЛЕНА', note: task.title }),
               ...state.log
             ]
           };
@@ -179,7 +179,7 @@ export const useAppStore = create<AppState>()(
               streak: streak(entries, habit.target)
             };
           }),
-          log: [makeEvent({ entity: 'HABIT', entityId: habitId, action: 'HABIT_TRACKED' }), ...state.log]
+          log: [makeEvent({ entity: 'HABIT', entityId: habitId, action: 'ОТМЕТКА_ПРИВЫЧКИ' }), ...state.log]
         })),
       addHabit: (title) =>
         set((state) => {

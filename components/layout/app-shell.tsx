@@ -6,10 +6,10 @@ import { CalendarDays, History, Home, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const links = [
-  { href: '/', label: 'Dashboard', icon: Home },
-  { href: '/calendar', label: 'Calendar', icon: CalendarDays },
-  { href: '/history', label: 'Logbook', icon: History },
-  { href: '/settings', label: 'Settings', icon: Settings }
+  { href: '/', label: 'Главная', icon: Home },
+  { href: '/calendar', label: 'Календарь', icon: CalendarDays },
+  { href: '/history', label: 'История', icon: History },
+  { href: '/settings', label: 'Настройки', icon: Settings }
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -19,12 +19,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div className="mx-auto flex min-h-screen max-w-7xl gap-6 px-4 py-4 md:px-6 lg:py-8">
       <aside className="hidden w-60 rounded-2xl bg-card p-4 shadow-soft lg:block">
         <div className="mb-10 flex items-center gap-3">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary/20 text-primary">
-            ◇
-          </div>
+          <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary/20 text-primary">◇</div>
           <div>
-            <p className="text-lg font-semibold">Dayloom</p>
-            <p className="text-xs text-slate-500">Focus in one flow</p>
+            <p className="text-lg font-semibold">Дейлум</p>
+            <p className="text-xs text-slate-500">Фокус в одном экране</p>
           </div>
         </div>
         <nav className="space-y-2">

@@ -9,24 +9,20 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-4 rounded-2xl bg-card p-4 shadow-soft">
-      <h1 className="text-3xl font-semibold">Settings</h1>
+      <h1 className="text-3xl font-semibold">Настройки</h1>
       <label className="flex items-center justify-between rounded-lg border p-3">
-        <span>Theme</span>
+        <span>Тема</span>
         <select value={theme} onChange={(e) => setTheme(e.target.value as 'light' | 'dark')} className="rounded-lg border px-2 py-1">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
+          <option value="light">Светлая</option>
+          <option value="dark">Тёмная</option>
         </select>
       </label>
       <label className="flex items-center justify-between rounded-lg border p-3">
-        <span>Voice input</span>
+        <span>Голосовой ввод</span>
         <input type="checkbox" checked={voiceEnabled} onChange={(e) => setVoiceEnabled(e.target.checked)} />
       </label>
-      <div className="rounded-lg border p-3 text-sm">
-        JSON import/export placeholders for user data.
-      </div>
-      <div className="rounded-lg border p-3 text-sm">
-        Notifications architecture: browser notifications are progressive enhancement; production delivery should use a background worker queue.
-      </div>
+      <div className="rounded-lg border p-3 text-sm">Импорт/экспорт JSON в локальный файл (плейсхолдер).</div>
+      <div className="rounded-lg border p-3 text-sm">Уведомления: в браузере как progressive enhancement, при запрете — fallback внутри интерфейса.</div>
     </div>
   );
 }

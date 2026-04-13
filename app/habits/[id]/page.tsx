@@ -16,10 +16,10 @@ export default function HabitDetailPage() {
       <div className="flex items-center gap-6">
         <HabitRing value={habit.value} target={habit.target} color={habit.color} size={120} />
         <div className="space-y-2 text-sm">
-          <p>Current streak: {habit.streak}</p>
-          <p>Best streak: {habit.bestStreak}</p>
-          <p>Success rate: {habit.successRate}%</p>
-          <p>Total completions: {habit.totalCompletions}</p>
+          <p>Текущая серия: {habit.streak}</p>
+          <p>Лучшая серия: {habit.bestStreak}</p>
+          <p>Успешность: {habit.successRate}%</p>
+          <p>Всего выполнений: {habit.totalCompletions}</p>
         </div>
       </div>
       <div className="flex gap-2">

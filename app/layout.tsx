@@ -6,13 +6,13 @@ import { AppShell } from '@/components/layout/app-shell';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Dayloom',
-  description: 'All your tasks, habits, and plans in one focused screen.'
+  title: 'Дейлум',
+  description: 'Личные задачи, привычки и план дня на одном экране.'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <body className={inter.className}>
         <AppShell>{children}</AppShell>
       </body>
