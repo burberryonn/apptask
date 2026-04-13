@@ -1,0 +1,199 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskStatus {
+  TODO
+  DONE
+  ARCHIVED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum HabitType {
+  YES_NO
+  COUNT
+  AMOUNT
+}
+
+enum HabitPeriod {
+  DAILY
+  WEEKLY
+}
+
+enum RecurrenceType {
+  NONE
+  DAILY
+  WEEKLY
+  MONTHLY
+  CUSTOM_WEEKDAYS
+}
+
+model User {
+  id                 String        @id @default(cuid())
+  email              String        @unique
+  name               String?
+  image              String?
+  passwordHash       String?
+  weekStartsOn       Int           @default(1)
+  defaultCategoryId  String?
+  voiceInputEnabled  Boolean       @default(true)
+  notificationsOn    Boolean       @default(true)
+  categories         Category[]
+  tasks              Task[]
+  habits             Habit[]
+  reminders          Reminder[]
+  logs               ActivityLog[]
+  lists              List[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([defaultCategoryId])
+}
+
+model List {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  color       String
+  isHidden    Boolean  @default(false)
+  tasks       Task[]
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, isHidden])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  color       String
+  tasks       Task[]
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Task {
+  id                String         @id @default(cuid())
+  userId            String
+  listId            String?
+  categoryId        String?
+  title             String
+  description       String?
+  dueAt             DateTime?
+  completedAt       DateTime?
+  status            TaskStatus     @default(TODO)
+  priority          Priority       @default(MEDIUM)
+  recurrenceType    RecurrenceType @default(NONE)
+  recurrenceDays    Int[]          @default([])
+  reminderOffsetMin Int?
+  isHidden          Boolean        @default(false)
+  subtasks          Subtask[]
+  reminders         Reminder[]
+  logs              ActivityLog[]
+  list              List?          @relation(fields: [listId], references: [id], onDelete: SetNull)
+  category          Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@index([userId, dueAt])
+  @@index([userId, status])
+  @@index([userId, isHidden])
+}
+
+model Subtask {
+  id          String   @id @default(cuid())
+  taskId      String
+  title       String
+  done        Boolean  @default(false)
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([taskId, done])
+}
+
+model Habit {
+  id          String      @id @default(cuid())
+  userId      String
+  title       String
+  note        String?
+  color       String
+  icon        String?
+  type        HabitType
+  period      HabitPeriod
+  target      Float       @default(1)
+  reminders   Reminder[]
+  entries     HabitEntry[]
+  logs        ActivityLog[]
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([userId, period])
+}
+
+model HabitEntry {
+  id          String   @id @default(cuid())
+  habitId     String
+  date        DateTime
+  value       Float
+  note        String?
+  habit       Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([habitId, date])
+  @@index([date])
+}
+
+model Reminder {
+  id            String    @id @default(cuid())
+  userId        String
+  taskId        String?
+  habitId       String?
+  scheduledFor  DateTime
+  deliveredAt   DateTime?
+  channel       String    @default("IN_APP")
+  status        String    @default("SCHEDULED")
+  payload       Json?
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task          Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  habit         Habit?    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([userId, scheduledFor, status])
+}
+
+model ActivityLog {
+  id          String    @id @default(cuid())
+  userId      String
+  taskId      String?
+  habitId     String?
+  action      String
+  meta        Json?
+  happenedAt  DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task        Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  habit       Habit?    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@index([userId, happenedAt])
+  @@index([action])
+}
