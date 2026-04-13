@@ -24,4 +24,5 @@
 
 body {
   @apply bg-background text-foreground antialiased;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
